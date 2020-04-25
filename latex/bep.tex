@@ -1,0 +1,93 @@
+\documentclass[a4paper, 11pt]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage{geometry}
+\geometry{
+  includeheadfoot,
+  margin = 2.54cm
+}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{minted}
+\usepackage{float}
+\usepackage{caption, subcaption}
+\usepackage{csquotes}
+% \usepackage{todonotes}
+\usepackage{bm}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\0}{\phantom{0}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_2}
+\newcommand{\onenorm}[1]{\left\lVert#1\right\rVert_1}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows}
+
+\usepackage[backend = biber, style = ieee]{biblatex}
+% If you want to break on URL numbers
+\setcounter{biburlnumpenalty}{9000}
+% If you want to break on URL lower case letters
+\setcounter{biburllcpenalty}{9000}
+% If you want to break on URL UPPER CASE letters
+\setcounter{biburlucpenalty}{9000}
+\AtEveryBibitem{\ifentrytype{misc}{}{\clearfield{url}}}
+\AtEveryBibitem{\clearfield{issn}}
+\AtEveryBibitem{\clearfield{isbn}}
+\AtEveryBibitem{\clearfield{month}}
+\DeclareFieldFormat{url}{Available: \url{#1}}
+\DeclareFieldFormat*{title}{#1}
+\addbibresource{library.bib}
+
+\usepackage[english, notuetoc]{packages/frontpage}
+\usepackage{tabto}
+\title{Digit recognition using Linear Algebra and Deep Learning}
+\subtitle{2WH40 Bachelor End Project \\~\\ \small{Menno Hofst\'e\tabto*{7em} (0996144)\\ \texttt{m.l.hofste@student.tue.nl}}}
+
+\author{Menno Hofst\'e\tabto*{7em} (0996144)}
+
+\orderissuer{Michiel Hochstenbach}
+\copyholder{}
+\administrativeunit{Department of Mathematics and Computer Science}
+\department{\textit{Center for Analysis, Scientific Computing and Applications (CASA)}}
+\Address{Postbus 513, 5600 MB Eindhoven\\ The Netherlands}
+
+% \includeonly{techniques/knn}
+
+\begin{document}
+\maketitle
+\begin{abstract}\noindent
+  Applications of digit and character recognition are everywhere.
+  This paper explores three different ways to classify handwritten digits, which are \(k\)-nearest neighbour algorithm, singular value decomposition, and neural network. First, we illustrate the techniques by numerical examples. Fundamentals of these techniques are explained, and their computational complexities and accuracies are discussed.
+  Finally, we conclude that the different properties of the methods makes them useful for different applications.
+\end{abstract}
+\newpage
+\thispagestyle{empty}
+\setcounter{page}{0}
+\tableofcontents
+\include{intro}
+\include{techniques/knn}
+\include{techniques/svd}
+\include{techniques/neural_network}
+\include{conclusion}
+
+% \bibliographystyle{ieeetr}
+% \bibliography{library}
+\printbibliography\newpage
+\section{Appendix}
+\inputminted[fontsize=\small]{matlab}{../matlab/digit_classifier.m}
+
+\end{document}

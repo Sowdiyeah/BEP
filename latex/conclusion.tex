@@ -1,0 +1,29 @@
+\section{Conclusion}\label{s:conclusion}
+Two factors that are important are the accuracy and the speed with which the digits are recognised.
+Three distinct methods to recognise digits were tested and timed.
+These methods are the \(k\)-nearest neighbour algorithm, calculating distances to subspaces using the singular value decomposition, and neural networks.
+
+The first technique, \(k\)-nearest neighbour, relies on the similarity between any image that needs to be classified and all images of the training set.
+Different measures of similarity, or metrics, such as the Euclidean distance and Tangent distance were explored. The Tangent distance is more accurate than the other distances, however this came at a significant cost.
+kNN is inherently computationally expensive, because it requires the computation of the distance between the image that needs to be classified and all the training images.
+The \(k\)-d tree was explored in an attempt to lower the computational cost by providing the possibility to skip certain distance calculations. This was unsuccessful due to the sparsity of the data.
+Approximate nearest neighbour in the form of the nearest mean did provide the increase in speed that was sought after, however this came with a relatively low accuracy.
+
+For the second technique, SVD, the distance to the space consisting of the linear combinations of the training images per digit was computed instead of the distance to each point in the training set.
+This was even slower and less accurate than the standard nearest neighbour.
+With the use of the singular value decomposition the same subspace could now be spanned by orthonormal vectors.
+This gave similar accuracy, however this method was significantly faster as a result of some nice properties provided by the orthonormality of the vectors.
+Since the same space is now spanned by orthonormal vectors, the most important vectors could be used to span a subspace with the most important features of a particular number.
+This lead to a big improvement in both speed and accuracy.
+
+The third and last technique, NN, makes use of neural networks.
+Neural networks is a typical example of the eager learning method.
+A neural network takes a long time to train, however once it is trained a single classification is extremely fast when compared to the other methods.
+As for the accuracy, the neural network performed comparable to kNN with the 1-norm.
+It was noted, however, that the neural network did not over-fit at any point and that more training images could improve this method without any extra computational complexity with regards to the classification.
+
+We have thus seen three techniques: kNN, SVD, and NN.\@
+We argued about their time complexities where possible, and we have seen the strengths and weaknesses of each technique.
+
+From our testing the SVD was the clear winner in our tests with the highest accuracy and fastest running time.
+In real use case scenarios, the neural network is more likely to be chosen as this application scales better with more training samples and more sophisticated structures.

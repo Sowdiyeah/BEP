@@ -1,0 +1,332 @@
+% This package defines the Report package in the TU/e 2008 style.
+% Besides new functionality, it also redefines some commands from
+% the standard report document class, so it is designed to work with this
+% class only!
+%
+% Author: Marko Boon
+% Date: March, 2009.
+\NeedsTeXFormat{LaTeX2e}
+\def\fileversion{v.1.0}\def\filedate{2009/03/19}
+\ProvidesPackage{packages/frontpage}
+          [\filedate\space\fileversion\space  TU/e style report 2008]
+\DeclareOption{english}{\def\lang{english}\let\nederlands\undefined}
+\DeclareOption{nederlands}{\def\lang{dutch}\def\nederlands{rty}}
+\DeclareOption{dutch}{\def\lang{dutch}\def\nederlands{rty}}
+\DeclareOption{noinnovation}{\def\innovation{false}}
+\DeclareOption{tuelogo}{\def\drawtuelogo{true}}
+\DeclareOption{notuelogo}{\let\drawtuelogo\undefined}
+\DeclareOption{notuetoc}{\def\notuetoc{true}}
+\ExecuteOptions{tuelogo,english}
+\ProcessOptions
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{fancyhdr,afterpage,graphicx,ifthen,color,pgf,titletoc}
+\RequirePackage{changepage}
+%\RequirePackage[margin=1cm]{geometry}
+%\RequirePackage[mtbold,mtpluscal]{mathtime}
+%\RequirePackage[\lang]{babel}
+
+%%%
+% TU/e fonts
+%%%
+
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\rmdefault}{ptm}
+%\renewcommand{\rmdefault}{phv}
+\renewcommand{\ttdefault}{pcr}
+
+\def\meta{\normalfont\fontsize{8pt}{8.5pt}\selectfont}
+\def\metasmall{\normalfont\fontsize{6.5pt}{8pt}\selectfont}
+
+% TU/e colors
+% Main Colours
+\definecolor{tuepmswarmred}{rgb}{0.969,0.192,0.192}
+\definecolor{tuepmsprocesscyan}{rgb}{0.000,0.635,0.871}
+\definecolor{tuepms206}{rgb}{0.839,0.000,0.290}
+\definecolor{tuepms300}{rgb}{0.000,0.400,0.800}
+\definecolor{tuepms226}{rgb}{0.839,0.000,0.482}
+\definecolor{tuepms253}{rgb}{0.678,0.125,0.678}
+\definecolor{tuepms2748}{rgb}{0.063,0.063,0.451}
+%Support Colours
+\definecolor{tuepms137}{rgb}{1.000,0.604,0.000}
+\definecolor{tuepmsyellow012}{rgb}{1.000,0.867,0.000}
+\definecolor{tuepms396}{rgb}{0.808,0.875,0.000}
+\definecolor{tuepms375}{rgb}{0.518,0.824,0.000}
+\definecolor{tuepmsgreen}{rgb}{0.000,0.675,0.510}
+\definecolor{tuepms3135}{rgb}{0.000,0.573,0.710}
+
+%Alternative, more common, names for some of these colours:
+\definecolor{tuewarmred}{rgb}{0.969,0.192,0.192}
+\definecolor{tueprocesscyan}{rgb}{0.000,0.635,0.871}
+\definecolor{tuecyan}{rgb}{0.000,0.635,0.871}
+\definecolor{tuered}{RGB}{200, 25, 25}
+\definecolor{tueblue}{rgb}{0.000,0.400,0.800}
+\definecolor{tuedarkblue}{rgb}{0.063,0.063,0.451}
+\definecolor{tueorange}{rgb}{1.000,0.604,0.000}
+\definecolor{tueyellow}{rgb}{1.000,0.867,0.000}
+\definecolor{tuelightgreen}{rgb}{0.518,0.824,0.000}
+\definecolor{tuegreen}{rgb}{0.000,0.675,0.510}
+
+\let\runauthor\@author
+
+
+\renewcommand\maketitle{\begin{titlepage}%
+  \let\footnotesize\small%
+  \let\footnoterule\relax%
+  \let \footnote \thanks%
+%%% Drawing of the TU/e axes and logo
+         \noindent\begin{pgfpicture}{1in+\oddsidemargin}{\the\paperheight-\topmargin-4.22cm}{\the\paperwidth}{0cm}
+             \drawtuelogoandaxes
+             \pgfsetcolor{black}
+             % From name and address
+             \pgftext[at=\pgfpoint{1.55cm}{\the\paperheight-8.15cm},left,bottom]{%
+             \ifx\nederlands\undefined
+             \parbox[b][3.5cm]{5cm}%
+             {\meta%
+               \raggedright\mbox{}\textbf{\departmentdata}\\
+               \mbox{}\afdelingdata\\
+               \addressdata\\
+               \websitedata
+               }\par
+             \else
+               \parbox[b][3.5cm]{5cm}%
+             {\raggedright\meta%
+               \mbox{}\textbf{\departmentdata}\\
+               \mbox{}\afdelingdata\\
+               De Rondom 70, 5612 AP Eindhoven\\
+               Postbus 513, 5600 MB Eindhoven\\
+               \websitedata
+               }\par
+             \fi}
+           % Left column
+           \pgftext[at=\pgfpoint{1.55cm}{\the\paperheight-9cm},left,top]{%
+           \parbox[t]{5cm}{%
+           \ifx\nederlands\undefined
+               \metasmall\textbf{Author} \\
+               \parbox[t]{\linewidth}{\meta\@author} \\[2ex]
+               \ifthenelse{\equal{\orderissuerdata}{}}{}{
+               \metasmall\textbf{Supervisor} \\
+               \parbox[t]{\linewidth}{\meta\orderissuerdata} \\[2ex]}
+               \ifthenelse{\equal{\referencedata}{}}{}{
+               \metasmall\textbf{Reference} \\
+               \parbox[t]{\linewidth}{\meta\referencedata} \\[2ex]}
+               \ifthenelse{\equal{\datedata}{}}{}{
+               \metasmall\textbf{Date} \\
+               \parbox[t]{\linewidth}{\meta\datedata} \\[2ex]}
+               \ifthenelse{\equal{\versiondata}{}}{}{
+               \metasmall\textbf{Version} \\
+               \parbox[t]{\linewidth}{\meta\versiondata} \\[2ex]}
+           \else%
+               \metasmall\textbf{Auteur} \\
+               \parbox[t]{\linewidth}{\meta\@author} \\[2ex]
+               \ifthenelse{\equal{\orderissuerdata}{}}{}{
+               \metasmall\textbf{Opdrachtgever} \\
+               \parbox[t]{\linewidth}{\meta\orderissuerdata} \\[2ex]}
+               \ifthenelse{\equal{\referencedata}{}}{}{
+               \metasmall\textbf{Referentie} \\
+               \parbox[t]{\linewidth}{\meta\referencedata} \\[2ex]}
+               \ifthenelse{\equal{\datedata}{}}{}{
+               \metasmall\textbf{Datum} \\
+               \parbox[t]{\linewidth}{\meta\datedata} \\[2ex]}
+               \ifthenelse{\equal{\versiondata}{}}{}{
+               \metasmall\textbf{Versie} \\
+               \parbox[t]{\linewidth}{\meta\versiondata} \\[2ex]}
+           \fi%
+           }}%
+           % Title and subtitle
+           \pgftext[at=\pgfpoint{\the\paperwidth/2-3cm}{\the\paperheight-9cm},left,top]{%
+             \parbox[t]{0.5\paperwidth}{\raggedright\normalfont\fontsize{17}{19}\selectfont\bfseries \@title\\[2ex]\large\mdseries \subtitledata}%
+           }
+           \pgftext[at=\pgfpoint{\the\paperwidth/2-3cm}{1.2cm},left,bottom]{%
+               \parbox[b][3.5cm]{8cm}
+               {\raggedright
+               \ifx\nederlands\undefined
+                 \ifthenelse{\equal{\copyholderdata}{}}{}{
+                 \metasmall\textbf{Copy holder}\\\meta\copyholderdata \\}
+               \else
+                 \ifthenelse{\equal{\copyholderdata}{}}{}{
+                 \metasmall\textbf{Kopiehouder}\\\meta\copyholderdata \\}
+               \fi
+               \par}
+             }
+           \end{pgfpicture}%
+  \end{titlepage}%
+  \setcounter{footnote}{0}%
+  \global\let\thanks\relax
+  \global\let\maketitle\relax
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+%  \global\let\@title\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\and\relax
+}
+
+% Defining the commands to specify name, department, etc.
+\newcommand*{\name}[1]{\def\fromname{#1}}
+\renewcommand*{\date}[1]{\def\datedata{#1}}
+\newcommand*{\administrativeunit}[1]{\def\departmentdata{#1}}
+\newcommand*{\department}[1]{\def\afdelingdata{#1}}
+\newcommand*{\website}[1]{\def\websitedata{#1}}
+\newcommand*{\subtitle}[1]{\def\subtitledata{#1}}
+\newcommand*{\orderissuer}[1]{\def\orderissuerdata{#1}}
+\newcommand*{\reference}[1]{\def\referencedata{#1}}
+\newcommand*{\version}[1]{\def\versiondata{#1}}
+\newcommand*{\copyholder}[1]{\def\copyholderdata{#1}}
+\newcommand*{\AuthorNameFooter}[1]{\def\authornamefooter{#1}}
+\newcommand*{\Address}[1]{\def\addressdata{#1}}
+
+% Initialisation of the above commands
+\name{}
+\date{\today}
+\administrativeunit{}
+\department{}
+\website{www.tue.nl}
+\subtitle{}
+\orderissuer{}
+\reference{}
+\version{}
+\copyholder{}
+\AuthorNameFooter{}
+\Address{}
+
+% Using the fancyhdr package to set the TU/e headings.
+\newcommand{\setheaders}{
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,LO]{\small \includegraphics[width=3cm]{tuelogo}}
+\fancyhead[LE,RO]{\small \textbf{\@title}} 
+\fancyfoot[RE,LO]{\small \authornamefooter}
+\fancyfoot[LE,RO]{\small \textbf{\thepage} }
+\fancyfoot[CE,CO]{\small \ifthenelse{\equal{\versiondata}{}}{}{ \ifx\nederlands\undefined (Version \else Versie \fi \versiondata)}}
+\renewcommand{\headrulewidth}{0.1mm}
+\renewcommand{\footrulewidth}{0.1mm}
+}
+
+% change the paragraph indent and paragraph skip
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1ex}
+
+% Redefining the index command to show headers on the Index page.
+\renewenvironment{theindex}
+               {\if@twocolumn
+                  \@restonecolfalse
+                \else
+                  \@restonecoltrue
+                \fi
+                \twocolumn[\@makeschapterhead{\indexname}]%
+                \@mkboth{\MakeUppercase\indexname}%
+                        {\MakeUppercase\indexname}%
+                %\thispagestyle{plain}
+                \parindent\z@
+                \parskip\z@ \@plus .3\p@\relax
+                \columnseprule \z@
+                \columnsep 35\p@
+                \let\item\@idxitem}
+               {\if@restonecol\onecolumn\else\clearpage\fi}
+
+
+% Completely redefine the \tableofcontents command.
+% It shows the TU/e logo and draws the axes.
+% It also needs to redefine the margins temporarily,
+% for which the changepage package is used.
+\ifx\notuetoc\undefined
+\renewcommand\tableofcontents{%
+    % The table of contents needs different margins. The package changepage is used to
+    % change the margins of certain pages within a document.
+    % After the table of contents, they will be reset.
+    % Note that the values will be added to the current values.
+    % Usage:
+    % \changepage{textheight}{textwidth}{evensidemargin}{oddsidemargin}{columnsep}{topmargin}{headheight}{headsep}{footskip}
+    \changepage{-5.5cm}{-3cm}{4.5cm}{4.5cm}{0cm}{0cm}{0cm}{6.3cm}{0cm}
+    \fancyhf{}
+    % Creating the header for odd pages. Note that the code is exactly the same as for even pages,
+    % except for one small difference: the x-position of the pgfpicture. I didn't find a more compact
+    % solution to this problem.
+    \newlength{\oldheadrulewidth}
+    \setlength{\oldheadrulewidth}{\headrulewidth}
+    \renewcommand{\headrulewidth}{0.0pt}
+    \renewcommand{\footrulewidth}{0.0pt}
+
+    \if@twoside
+    \fancyhead[CO]{
+      \begin{pgfpicture}{4.3cm+\oddsidemargin}{\the\paperheight-\voffset-3.0cm}{\the\paperwidth}{0cm}
+      \drawtuetableofcontents
+      \end{pgfpicture}
+    }
+    \fancyhead[CE]{
+      \begin{pgfpicture}{4.3cm+0.05cm}{\the\paperheight-\voffset-2.55cm}{\the\paperwidth}{0cm}
+      \drawtuetableofcontents
+      \end{pgfpicture}
+    }
+    \else
+    \fancyhead[C]{
+      \begin{pgfpicture}{4.4cm+\oddsidemargin}{\the\paperheight-\voffset-1.6cm}{\the\paperwidth}{0cm}
+      \drawtuetableofcontents
+      \end{pgfpicture}
+    }
+    \fi
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \pagestyle{fancy}
+    \@starttoc{toc}%
+    \if@restonecol\twocolumn\fi
+    \cleardoublepage\newpage
+    % Reset the original values of all margins
+    \changepage{5.5cm}{3cm}{-4.5cm}{-4.5cm}{0cm}{0cm}{0cm}{-6.3cm}{0cm}
+    \setheaders{}
+    \setcounter{page}{1}
+    \renewcommand{\headrulewidth}{\oldheadrulewidth}
+    }
+\fi
+
+% Use this command only INSIDE a pgfpicture environment:
+\newcommand{\drawtuelogoandaxes}{
+            \ifx\drawtuelogo\undefined\relax
+            \else
+             % TU/e logo and red lines
+             \pgftext[at=\pgfpoint{\the\paperwidth/2-0.85mm}{\the\paperheight-1.8cm},center,center]{\includegraphics[width=7cm]{tuelogo.png}}%
+             \pgfsetcolor{tuered}
+             \pgfpathmoveto{\pgfpoint{0mm}{\the\paperheight-8.5cm}}
+             \pgfpathlineto{\pgfpoint{\the\paperwidth}{\the\paperheight-8.5cm}}
+             \pgfpathlineto{\pgfpoint{\the\paperwidth}{\the\paperheight-8.52cm}}
+             \pgfpathlineto{\pgfpoint{0cm}{\the\paperheight-8.52cm}}
+             \pgfusepath{fill}
+             \pgfpathmoveto{\pgfpoint{\the\paperwidth/1.87-1.12cm}{\the\paperheight}}
+             \pgfpathlineto{\pgfpoint{\the\paperwidth/2.9-1.12cm-\the\paperheight/3.487}{0cm}}
+             \pgfpathlineto{\pgfpoint{\the\paperwidth/2.9-1.14cm-\the\paperheight/3.487}{0cm}}
+             \pgfpathlineto{\pgfpoint{\the\paperwidth/1.87-1.14cm}{\the\paperheight}}
+             \pgfusepath{fill}
+             \pgfsetcolor{tuedarkblue}
+             \ifx\innovation\undefined
+               \pgftext[at=\pgfpoint{\the\paperwidth/2-0.7cm-\the\paperheight/3.487}{0.8cm},left,bottom]{\bfseries Where innovation starts}%
+             \fi
+            \fi
+}
+
+\newcommand{\drawtuetableofcontents}{
+      \drawtuelogoandaxes
+      \color{black}
+      % Table of Contents
+      \pgftext[at=\pgfpoint{1.55cm}{\the\paperheight-8.15cm},left,bottom]{%
+        \parbox[b][3.5cm]{5cm}{\LARGE\ifx\nederlands\undefined Table of contents\else Inhoudsopgave\fi}
+      }
+      \color{black}
+      % Title and subtitle
+      \pgftext[at=\pgfpoint{1.55cm}{\the\paperheight-9cm},left,top]{%
+      \parbox[t]{4.9cm}{%
+      \ifx\nederlands\undefined
+          \metasmall\textbf{Title} \\
+          \parbox[t]{\linewidth}{\raggedright\mbox{}\meta\@title}
+      \else
+          \metasmall\textbf{Titel} \\
+          \parbox[t]{\linewidth}{\raggedright\mbox{}\meta\@title}
+      \fi}}
+}
+
+\endinput

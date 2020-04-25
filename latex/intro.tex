@@ -1,0 +1,41 @@
+\section{Introduction}\label{s:intro}
+Applications of automatic digit and character recognition are everywhere. 
+Examples are recognising street signs, digitising old documents, or searching for words that appear in a photograph. 
+The potential in this field is enormous, and as such there is also a lot of research done in this area~\cite{Anthonissen, Savas2007, Ciresan2010, Cao2006}. 
+The automatic classification of handwritten digits is often considered as a standard problem in pattern recognition, because many challenges of pattern recognition are present~\cite{Savas2007}.
+The research done in this area led to a number of ways to solve this problem. 
+This thesis will give an overview of some of those popular techniques and compare them.
+
+To compare the various techniques, we used labelled images from a subset of the US Postal Service Database which was packaged with a book from Hastie et al~\cite{Hastie2009}. 
+This data set is split up into 2 sets. 
+There is a training set, which consists of a digit and an image representing that digit. 
+This is the only set which the algorithms and models have complete access to. 
+The other set is called a test set. 
+This set also consists of a digit and an image representing that digit; however in this case the algorithms and models only have access to the images. 
+This set is given as input after which a classification attempt is made by using the technique under consideration on the test set. 
+Then the corresponding digit in the test set can be used to decide whether or not the classification is correct.
+
+Each image in the data set has a dimension of 16 \(\times \) 16 and thus consists of 256 pixels.
+The image is a black-and-white monochrome image, where each pixel has a certain gray-scale value between \(-1\) and \(1\) with a step size of \(5\cdot 10^{-4}\). 
+In this paper the lowest pixel value in an image is chosen to be completely white and the highest pixel value black. 
+This is merely a convention such that the black digits are displayed on a white background.
+
+The following structure is present in the paper.
+First, in Section~\ref{s:knn}, test images will be compared with the training images with the \(k\)-nearest neighbour algorithm.
+Secondly, in Section~\ref{s:svd_all}, test images are classified on their distance to subspaces spanned by the training images for a particular number.
+Finally, in Section~\ref{s:neural_network}, images are classified through the use of a neural network model.
+
+Section~\ref{s:knn} starts with the remark that each image can be represented by a point in a 256-dimensional space.
+In this space each element of the vector corresponds to the brightness of a pixel, hence this space will be called the pixel space.
+In this section, the similarity between two images is made more concrete.
+Then the idea is to classify a test digit as the digit corresponding to the most similar digit.
+
+Section~\ref{s:svd_all} exploits the fact that all training images for a particular number form a subspace. Using the singular value decomposition this space is represented in a more convenient way.
+The idea is to classify a test digit as the digit corresponding to the closest subspace.
+
+In Section~\ref{s:neural_network} we train a model on the training images in the hope that patterns pertaining to different images are extracted.
+Test images are then given as input to the model, where the model can use the different patterns to recognise a digit.
+Fundamental parts of a neural network will be explained with the use of a small example, after which it will be applied to the digit recognition problem.
+
+Finally, we draw some conclusions in Section~\ref{s:conclusion}.
+In the appendix the reader can find parts of the code created in MATLAB 2019a.
